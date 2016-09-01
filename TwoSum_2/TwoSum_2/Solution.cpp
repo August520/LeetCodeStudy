@@ -8,50 +8,55 @@ class Solution {
 public:
 	vector<int> twoSum(vector<int>& nums, int target) 
 	{
-		sort(nums.begin(), nums.end());
-		unsigned int first = 0;
-		unsigned int last = nums.size() - 1;
+		vector<int> vecTwoSum = nums;
+		sort(vecTwoSum.begin(), vecTwoSum.end());
+		unsigned int start = 0;
+		unsigned int end = vecTwoSum.size() - 1;
+
+		int first = 0;
+		int second = 0;
+
 		int sum = 0;
 
-		vector<int> vecTwoSum;
-
-		while (target != sum)
+		while (start < end)
 		{
-			sum = nums[first] + nums[last];
+			sum = vecTwoSum[start] + vecTwoSum[end];
 			if (sum > target)
-				last--;
+				end--;
 			else if (sum < target)
-				first++;
+				start++;
 			else
 			{
-				vecTwoSum.push_back(first);
-				vecTwoSum.push_back(last);
-				return vecTwoSum;
+				first = vecTwoSum[start];
+				second = vecTwoSum[end];
+				break;
 			}
 				
 		}
-		return vecTwoSum;
 
-		
-		for (unsigned int i=0; i<nums.size(); i++)
-			for (unsigned int j=i+1; j<nums.size(); j++)
-			{
-				if (nums[i]+nums[j] == target)
-				{
-					vecTwoSum.push_back(i);
-					vecTwoSum.push_back(j);
-					return vecTwoSum;
-				}
-			}
+		vecTwoSum.clear();
+		if (start > end)
 			return vecTwoSum;
+		if(first != second)
+		{
+			vecTwoSum.push_back(find(nums.begin(), nums.end(),first)-nums.begin());
+			vecTwoSum.push_back(find(nums.begin(), nums.end(),second)-nums.begin());
+		}
+		else
+		{
+			vecTwoSum.push_back(find(nums.begin(), nums.end(),first)-nums.begin());
+			vecTwoSum.push_back(find(nums.begin()+vecTwoSum[0]+1, nums.end(),second)-nums.begin());
+		}
+
+		return vecTwoSum;
 	}
 };
 
 int main()
 {
 	Solution solu;
-	int itarget = 6;
-	int ivalues[3] = {3, 2, 4};
+	int itarget = 0;
+	int ivalues[4] = {-3, 4, 3, 90};
 	vector<int> numbers(ivalues, ivalues+3);
 
 	vector<int> result = solu.twoSum(numbers, itarget);
